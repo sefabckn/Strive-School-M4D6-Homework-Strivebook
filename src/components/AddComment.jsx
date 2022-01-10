@@ -7,14 +7,24 @@ class AddComment extends Component{
         comment : {
             comment:'',
             rate:1, //default value
-            elementId: this.props.asin //asin of book 
+            elementId: null //asin of book 
+        }
+    }
+    componentDidUpdate(prevProps){
+        if(prevProps.asin !== this.props.asin){
+            this.setState({
+                comment:{
+                    ...this.state.comment,
+                    elementId: this.props.asin
+                }
+            })
         }
     }
     //Fetching POST 
     postComment = async (e) =>{
-        //e.preventDefault()
+        e.preventDefault()
         const url = 'https://striveschool-api.herokuapp.com/api/comments'
-        const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyOTU0M2FhY2FhMjAwMTU1MmExOWYiLCJpYXQiOjE2NDE4MjIzNjEsImV4cCI6MTY0MzAzMTk2MX0.ztGCwlxmWZCgIpF9ckR6fmhKalZbRUrCR4dJG4pHi-w"
+        const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyOTU0M2FhY2FhMjAwMTU1MmExOWYiLCJpYXQiOjE2NDE4MjcxNDQsImV4cCI6MTY0MzAzNjc0NH0.dj7MeqyybbIoATeI6yoAJV91SYAG5N7bY5FAdG6Gbb4"
         try {
             let response = await fetch(url,{
                 method:'POST',
@@ -24,6 +34,7 @@ class AddComment extends Component{
                     Authorization: token
                 }
             })
+            console.log(response)
             if(response.ok){
                 Alert('Comment Posted')
             }else{

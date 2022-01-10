@@ -11,27 +11,29 @@ class CommentArea extends Component{
             comment:[]
         }
      
-        componentDidMount = async()=> {
-            const url = 'https://striveschool-api.herokuapp.com/api/comments/' + this.props.asin
-            try {
-                let response = await fetch(url, {
-                    headers:{
-                        Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyOTU0M2FhY2FhMjAwMTU1MmExOWYiLCJpYXQiOjE2NDE4MjIzNjEsImV4cCI6MTY0MzAzMTk2MX0.ztGCwlxmWZCgIpF9ckR6fmhKalZbRUrCR4dJG4pHi-w",
+        componentDidUpdate = async (prevProps)=> {
+            if(prevProps.asin !== this.props.asin){
+                const url = 'https://striveschool-api.herokuapp.com/api/comments/' + this.props.asin
+                try {
+                    let response = await fetch(url, {
+                        headers:{
+                            Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyOTU0M2FhY2FhMjAwMTU1MmExOWYiLCJpYXQiOjE2NDE4MjcxNDQsImV4cCI6MTY0MzAzNjc0NH0.dj7MeqyybbIoATeI6yoAJV91SYAG5N7bY5FAdG6Gbb4",
+                        }
+                    })
+                    console.log(response)
+                    if(response.ok){
+                        let commentData = await response.json()
+                        this.setState({comment:commentData})
                     }
-                })
-                if(response.ok){
-                    let commentData = await response.json()
-                    this.setState({comment:commentData})
+                } catch (error) {
+                    <Alert>{error}</Alert>
                 }
-            } catch (error) {
-                <Alert>{error}</Alert>
             }
         }
 
         render(){
             return(
                 <> <Container>
-                        
                         <Row>
                             <CommentList commentDisplay = {this.state.comment}/>
                             <AddComment asin={this.props.asin}/>

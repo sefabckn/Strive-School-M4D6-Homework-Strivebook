@@ -16,6 +16,7 @@ function App() {
       <MyNavbar brand="Strivebook" />
       <WarningSign  text ={'Dangerous Alert'}/>
       <MyBadge text={'Successfully'} color={'danger'} />
+      <SingleBook book={items[0]}/>
       <div className='row'>
         <div className='col-8'>
           <BookList books = {items}/>
